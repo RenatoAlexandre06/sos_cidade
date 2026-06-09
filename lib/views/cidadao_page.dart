@@ -395,7 +395,7 @@ class _CidadaoPageState extends State<CidadaoPage> {
                     icon: const Icon(Icons.notifications),
                     onPressed: () => _abrirCentralNotificacoes(provider),
                   ),
-                ),
+                )       
               )
             ],
           ),
