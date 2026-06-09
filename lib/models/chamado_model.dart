@@ -8,6 +8,12 @@ class Chamado {
   String responsavel;
   DateTime data;
   String status;
+  bool isFavorito;
+  String? imagemPath;
+  double? latitude;
+  double? longitude;
+  // NOVA FLAG: Controla a sincronização com a nuvem
+  bool isSincronizado; 
 
   Chamado({
     this.id,
@@ -19,25 +25,12 @@ class Chamado {
     required this.responsavel,
     required this.data,
     required this.status,
+    this.isFavorito = false,
+    this.imagemPath,
+    this.latitude,
+    this.longitude,
+    this.isSincronizado = false, // Por padrão, nasce como falso (0)
   });
-
-  String get tempoDecorrido {
-    final diferenca = DateTime.now().difference(data);
-    if (diferenca.inDays > 0) return '${diferenca.inDays} dias atrás';
-    if (diferenca.inHours > 0) return '${diferenca.inHours} horas atrás';
-    return '${diferenca.inMinutes} minutos atrás';
-  }
-
-  int get pesoPrioridade {
-    // Usamos toLowerCase para garantir que a ordenação não quebre
-    switch (prioridade.toLowerCase()) {
-      case 'crítica': return 4;
-      case 'alta': return 3;
-      case 'média': return 2;
-      case 'baixa': return 1;
-      default: return 0;
-    }
-  }
 
   Map<String, dynamic> toMap() {
     return {
@@ -50,6 +43,11 @@ class Chamado {
       'responsavel': responsavel,
       'data': data.toIso8601String(),
       'status': status,
+      'isFavorito': isFavorito ? 1 : 0,
+      'imagemPath': imagemPath,
+      'latitude': latitude,
+      'longitude': longitude,
+      'isSincronizado': isSincronizado ? 1 : 0, // Salva no SQLite como 1 ou 0
     };
   }
 
@@ -64,6 +62,29 @@ class Chamado {
       responsavel: map['responsavel'],
       data: DateTime.parse(map['data']),
       status: map['status'],
+      isFavorito: map['isFavorito'] == 1,
+      imagemPath: map['imagemPath'],
+      latitude: map['latitude'],
+      longitude: map['longitude'],
+      isSincronizado: map['isSincronizado'] == 1, // Recupera do SQLite como boicote
     );
+  }
+
+  String get tempoDecorrido {
+    final diferenca = DateTime.now().difference(data);
+    if (diferenca.inMinutes < 60) return '${diferenca.inMinutes} minutos atrás';
+    if (diferenca.inHours < 24) return '${diferenca.inHours} horas atrás';
+    return '${diferenca.inDays} dias atrás';
+  }
+
+  int get pesoPrioridade {
+    if (status == 'Concluído') return 0;
+    switch (prioridade) {
+      case 'Crítica': return 4;
+      case 'Alta': return 3;
+      case 'Média': return 2;
+      case 'Baixa': return 1;
+      default: return 0;
+    }
   }
 }

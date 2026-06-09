@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'dashboard_page.dart';
+import 'login_page.dart';
 
 class SplashPage extends StatefulWidget {
   const SplashPage({Key? key}) : super(key: key);
@@ -17,7 +17,7 @@ class _SplashPageState extends State<SplashPage> {
       // Usamos pushReplacement para que o usuário não consiga "voltar" para a Splash Screen
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (context) => const DashboardPage()),
+        MaterialPageRoute(builder: (context) => const LoginPage()),
       );
     });
   }

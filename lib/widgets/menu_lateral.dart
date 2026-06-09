@@ -52,7 +52,7 @@ class MenuLateral extends StatelessWidget {
             child: Column(
               children: [
                 const Text(
-                  'Versão 1.0.0',
+                  'Versão 2.0.0',
                   style: TextStyle(color: Colors.grey, fontSize: 12),
                 ),
                 const SizedBox(height: 4),
