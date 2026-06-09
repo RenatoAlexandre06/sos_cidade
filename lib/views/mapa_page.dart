@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../providers/chamado_provider.dart';
 import '../models/chamado_model.dart';
-import '../widgets/menu_lateral.dart';
+import '../widgets/menu_lateral.dart'; 
 import 'cadastro_page.dart';
 import 'mapa_page.dart';
 
@@ -14,8 +14,8 @@ class DashboardPage extends StatefulWidget {
 }
 
 class _DashboardPageState extends State<DashboardPage> {
-  String _filtroAtual = 'Todos';
-
+  String _filtroAtual = 'Todos'; 
+  
   bool _isSearching = false;
   final TextEditingController _searchController = TextEditingController();
   String _searchQuery = '';
@@ -62,7 +62,7 @@ class _DashboardPageState extends State<DashboardPage> {
     if (chamado.status == 'Aberto') return Colors.orange;
     return Colors.grey;
   }
-
+  
   Color _getCorTextoStatus(String status, BuildContext context) {
     if (status == 'Concluído') return Colors.green;
     if (status == 'Em andamento') return Colors.blue;
@@ -92,7 +92,7 @@ class _DashboardPageState extends State<DashboardPage> {
     for (var chamado in chamados) {
       contagemBairros[chamado.bairro] = (contagemBairros[chamado.bairro] ?? 0) + 1;
     }
-
+    
     var rankingBairros = contagemBairros.entries.toList();
     rankingBairros.sort((a, b) => b.value.compareTo(a.value));
 
@@ -101,7 +101,7 @@ class _DashboardPageState extends State<DashboardPage> {
       children: [
         const Text('Visão Geral dos Status', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
         const SizedBox(height: 16),
-
+        
         Container(
           height: 30,
           decoration: BoxDecoration(borderRadius: BorderRadius.circular(15), color: Colors.grey.shade300),
@@ -134,7 +134,7 @@ class _DashboardPageState extends State<DashboardPage> {
         ...List.generate(rankingBairros.length, (index) {
           final bairro = rankingBairros[index].key;
           final quantidade = rankingBairros[index].value;
-
+          
           Color corMedalha = Colors.grey.shade400;
           IconData iconeMedalha = Icons.looks_4;
           if (index == 0) { corMedalha = Colors.amber; iconeMedalha = Icons.looks_one; }
@@ -177,7 +177,7 @@ class _DashboardPageState extends State<DashboardPage> {
     final favoritosCount = provider.chamados.where((c) => c.isFavorito).length;
 
     List<Chamado> chamadosFiltrados = provider.chamados;
-
+    
     if (_filtroAtual == 'Favoritos') {
       chamadosFiltrados = chamadosFiltrados.where((c) => c.isFavorito).toList();
     } else if (_filtroAtual == 'Crítica') {
@@ -220,7 +220,7 @@ class _DashboardPageState extends State<DashboardPage> {
           const SizedBox(height: 8),
 
           SizedBox(
-            height: 90,
+            height: 90, 
             child: ListView(
               scrollDirection: Axis.horizontal,
               padding: const EdgeInsets.symmetric(horizontal: 12.0),
@@ -260,105 +260,105 @@ class _DashboardPageState extends State<DashboardPage> {
             },
             child: chamadosFiltrados.isEmpty
                 ? Padding(
-              key: const ValueKey('empty'),
-              padding: const EdgeInsets.all(32.0),
-              child: Center(child: Text(_filtroAtual == 'Favoritos' ? 'Nenhum chamado favorito.' : 'Nenhum chamado encontrado.')),
-            )
+                    key: const ValueKey('empty'),
+                    padding: const EdgeInsets.all(32.0),
+                    child: Center(child: Text(_filtroAtual == 'Favoritos' ? 'Nenhum chamado favorito.' : 'Nenhum chamado encontrado.')),
+                  )
                 : ListView.builder(
-              key: ValueKey(chamadosFiltrados.length.toString() + _filtroAtual),
-              shrinkWrap: true,
-              physics: const NeverScrollableScrollPhysics(),
-              itemCount: chamadosFiltrados.length,
-              itemBuilder: (context, index) {
-                final chamado = chamadosFiltrados[index];
-                final corBalao = _getCorChamado(chamado);
-
-                return Card(
-                  margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                  child: ListTile(
-                    leading: CircleAvatar(
-                      backgroundColor: corBalao.withOpacity(0.2),
-                      child: Icon(
-                        _getIconeCategoria(chamado.categoria),
-                        color: corBalao,
-                      ),
-                    ),
-                    title: Row(
-                      children: [
-                        // Usando Expanded para o título não estourar a tela
-                        Expanded(
-                          child: Text(
-                            chamado.titulo,
-                            style: const TextStyle(fontWeight: FontWeight.bold),
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
+                    key: ValueKey(chamadosFiltrados.length.toString() + _filtroAtual),
+                    shrinkWrap: true, 
+                    physics: const NeverScrollableScrollPhysics(), 
+                    itemCount: chamadosFiltrados.length,
+                    itemBuilder: (context, index) {
+                      final chamado = chamadosFiltrados[index];
+                      final corBalao = _getCorChamado(chamado); 
+                      
+                      return Card(
+                        margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                        child: ListTile(
+                          leading: CircleAvatar(
+                            backgroundColor: corBalao.withOpacity(0.2), 
+                            child: Icon(
+                              _getIconeCategoria(chamado.categoria),
+                              color: corBalao,
+                            ),
                           ),
-                        ),
-                        if (chamado.isFavorito)
-                          const Icon(Icons.star, color: Colors.amber, size: 16),
-                      ],
-                    ),
-                    subtitle: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        // AQUI FOI APLICADA A SUA CORREÇÃO VISUAL
-                        Row(
-                          children: [
-                            Flexible(
-                              child: Text(
-                                chamado.categoria,
+                          title: Row(
+                            children: [
+                              // Usando Expanded para o título não estourar a tela
+                              Expanded(
+                                child: Text(
+                                  chamado.titulo, 
+                                  style: const TextStyle(fontWeight: FontWeight.bold),
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                              ),
+                              if (chamado.isFavorito)
+                                const Icon(Icons.star, color: Colors.amber, size: 16),
+                            ],
+                          ),
+                          subtitle: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              // AQUI FOI APLICADA A SUA CORREÇÃO VISUAL
+                              Row(
+                                children: [
+                                  Flexible(
+                                    child: Text(
+                                      chamado.categoria,
+                                      overflow: TextOverflow.ellipsis,
+                                    ),
+                                  ),
+                                  if (chamado.imagemPath != null) ...[
+                                    const SizedBox(width: 6),
+                                    const Icon(Icons.image, size: 14, color: Colors.blueGrey),
+                                  ],
+                                ],
+                              ),
+                              const SizedBox(height: 2),
+                              Text(
+                                chamado.bairro, 
+                                style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w500),
+                                maxLines: 1,
                                 overflow: TextOverflow.ellipsis,
                               ),
-                            ),
-                            if (chamado.imagemPath != null) ...[
-                              const SizedBox(width: 6),
-                              const Icon(Icons.image, size: 14, color: Colors.blueGrey),
+                              const SizedBox(height: 2),
+                              Text(chamado.tempoDecorrido, style: const TextStyle(color: Colors.blueGrey, fontSize: 12)),
                             ],
-                          ],
+                          ),
+                          trailing: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text(chamado.prioridade, style: TextStyle(
+                                color: _getCorPrioridade(chamado.prioridade, context),
+                                fontWeight: FontWeight.bold,
+                                fontSize: 12,
+                              )),
+                              const SizedBox(height: 4),
+                              Text(chamado.status, style: TextStyle(
+                                fontSize: 12, 
+                                color: _getCorTextoStatus(chamado.status, context),
+                                fontWeight: FontWeight.bold
+                              )),
+                            ],
+                          ),
+                          onTap: () {
+                            if (chamado.status == 'Concluído') {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(content: Text('Chamados concluídos não podem ser editados.'), backgroundColor: Colors.red),
+                              );
+                            } else {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(builder: (context) => CadastroPage(chamadoParaEditar: chamado)),
+                              );
+                            }
+                          },
                         ),
-                        const SizedBox(height: 2),
-                        Text(
-                          chamado.bairro,
-                          style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w500),
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                        ),
-                        const SizedBox(height: 2),
-                        Text(chamado.tempoDecorrido, style: const TextStyle(color: Colors.blueGrey, fontSize: 12)),
-                      ],
-                    ),
-                    trailing: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text(chamado.prioridade, style: TextStyle(
-                          color: _getCorPrioridade(chamado.prioridade, context),
-                          fontWeight: FontWeight.bold,
-                          fontSize: 12,
-                        )),
-                        const SizedBox(height: 4),
-                        Text(chamado.status, style: TextStyle(
-                            fontSize: 12,
-                            color: _getCorTextoStatus(chamado.status, context),
-                            fontWeight: FontWeight.bold
-                        )),
-                      ],
-                    ),
-                    onTap: () {
-                      if (chamado.status == 'Concluído') {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(content: Text('Chamados concluídos não podem ser editados.'), backgroundColor: Colors.red),
-                        );
-                      } else {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => CadastroPage(chamadoParaEditar: chamado)),
-                        );
-                      }
+                      );
                     },
                   ),
-                );
-              },
-            ),
           ),
         ],
       ),
@@ -371,17 +371,17 @@ class _DashboardPageState extends State<DashboardPage> {
       appBar: AppBar(
         title: _isSearching
             ? TextField(
-          controller: _searchController,
-          autofocus: true,
-          decoration: const InputDecoration(
-            hintText: 'Procurar chamados...',
-            border: InputBorder.none,
-            hintStyle: TextStyle(color: Colors.white70),
-          ),
-          style: const TextStyle(color: Colors.white, fontSize: 16),
-          cursorColor: Colors.white,
-          onChanged: (value) => setState(() => _searchQuery = value.toLowerCase()),
-        )
+                controller: _searchController,
+                autofocus: true,
+                decoration: const InputDecoration(
+                  hintText: 'Procurar chamados...',
+                  border: InputBorder.none,
+                  hintStyle: TextStyle(color: Colors.white70),
+                ),
+                style: const TextStyle(color: Colors.white, fontSize: 16),
+                cursorColor: Colors.white,
+                onChanged: (value) => setState(() => _searchQuery = value.toLowerCase()),
+              )
             : const Text('SOS Cidade'),
         centerTitle: true,
         actions: [
@@ -400,7 +400,7 @@ class _DashboardPageState extends State<DashboardPage> {
         ],
       ),
       drawer: const MenuLateral(),
-
+      
       // PageView
       body: Consumer<ChamadoProvider>(
         builder: (context, provider, child) {
@@ -441,7 +441,7 @@ class _DashboardPageState extends State<DashboardPage> {
 
   Widget _buildCard(String titulo, int valor, Color cor, String filtroReferencia, IconData icone, BuildContext context) {
     bool isSelected = _filtroAtual == filtroReferencia;
-
+    
     return Container(
       width: 105,
       margin: const EdgeInsets.symmetric(horizontal: 4.0),
@@ -450,7 +450,7 @@ class _DashboardPageState extends State<DashboardPage> {
         child: AnimatedContainer(
           duration: const Duration(milliseconds: 200),
           curve: Curves.easeInOut,
-          margin: EdgeInsets.all(isSelected ? 0 : 2),
+          margin: EdgeInsets.all(isSelected ? 0 : 2), 
           decoration: BoxDecoration(
             color: isSelected ? cor.withOpacity(0.15) : Theme.of(context).cardColor,
             borderRadius: BorderRadius.circular(8),
