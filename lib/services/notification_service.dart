@@ -13,24 +13,22 @@ class NotificationService {
     // Configuração para o iOS
     const DarwinInitializationSettings initializationSettingsIOS =
         DarwinInitializationSettings(
-          requestAlertPermission: true,
-          requestBadgePermission: true,
-          requestSoundPermission: true,
-        );
+      requestAlertPermission: true,
+      requestBadgePermission: true,
+      requestSoundPermission: true,
+    );
 
-    const InitializationSettings initializationSettings =
-        InitializationSettings(
-          android: initializationSettingsAndroid,
-          iOS: initializationSettingsIOS,
-        );
+    const InitializationSettings initializationSettings = InitializationSettings(
+      android: initializationSettingsAndroid,
+      iOS: initializationSettingsIOS,
+    );
 
     // Inicializa o plugin
     await _notificationsPlugin.initialize(initializationSettings);
 
+    
     _notificationsPlugin
-        .resolvePlatformSpecificImplementation<
-          AndroidFlutterLocalNotificationsPlugin
-        >()
+        .resolvePlatformSpecificImplementation<AndroidFlutterLocalNotificationsPlugin>()
         ?.requestNotificationsPermission();
   }
 
@@ -40,8 +38,7 @@ class NotificationService {
     required String titulo,
     required String corpo,
   }) async {
-    const AndroidNotificationDetails
-    androidDetails = AndroidNotificationDetails(
+    const AndroidNotificationDetails androidDetails = AndroidNotificationDetails(
       'sos_cidade_channel', // ID do canal
       'Chamados SOS Cidade', // Nome do canal visível nas definições do telemóvel
       channelDescription: 'Notificações de atualizações de chamados da cidade',
@@ -57,6 +54,11 @@ class NotificationService {
       iOS: iosDetails,
     );
 
-    await _notificationsPlugin.show(id, titulo, corpo, notificationDetails);
+    await _notificationsPlugin.show(
+      id,
+      titulo,
+      corpo,
+      notificationDetails,
+    );
   }
 }
